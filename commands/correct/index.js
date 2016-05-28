@@ -1,6 +1,6 @@
 const axios = require('axios')
 const querystring = require('querystring')
-const { token } = require('../../config')
+const { apiToken } = require('../../config')
 const parse = require('./parse')
 const matches = require('./matches')
 
@@ -11,11 +11,11 @@ module.exports = (req, res) => {
   const { incorrect, correct, parseError } = parse(text)
 
   if (parseError) {
-    return res.send('Supported formats:\n/correct incorrect = correct \n/correct /s/incorrect/correct')
+    return res.send('Correct something someone said. Supported formats:\n/correct incorrect = correct \n/correct /s/incorrect/correct')
   }
 
   axios.post(historyUrl, querystring.stringify({
-    token,
+    apiToken,
     channel: req.body.channel_id,
     count: 10,
   }))
@@ -35,7 +35,7 @@ module.exports = (req, res) => {
 
     axios.post('https://slack.com/api/chat.postMessage',
       querystring.stringify({
-        token,
+        apiToken,
         channel: isPrivate ? userBeingCorrected : '#corrections',
         attachments: JSON.stringify(attachments),
       })
