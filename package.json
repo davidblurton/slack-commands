@@ -4,7 +4,7 @@
   "description": "Correct people on Slack with a slash command",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ava",
     "dev": "nodemon"
   },
   "author": "",
@@ -16,6 +16,7 @@
     "querystring": "^0.2.0"
   },
   "devDependencies": {
+    "ava": "^0.15.1",
     "nodemon": "^1.9.2"
   }
 }
