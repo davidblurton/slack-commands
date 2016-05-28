@@ -1,0 +1,21 @@
+{
+  "name": "slack-correct",
+  "version": "1.0.0",
+  "description": "Correct people on Slack with a slash command",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.11.1",
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "querystring": "^0.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2"
+  }
+}
