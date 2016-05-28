@@ -4,8 +4,8 @@
   "description": "Correct people on Slack with a slash command",
   "main": "index.js",
   "scripts": {
-    "test": "ava",
-    "dev": "nodemon"
+    "start": "node index",
+    "test": "ava"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +16,6 @@
     "querystring": "^0.2.0"
   },
   "devDependencies": {
-    "ava": "^0.15.1",
-    "nodemon": "^1.9.2"
+    "ava": "^0.15.1"
   }
 }
