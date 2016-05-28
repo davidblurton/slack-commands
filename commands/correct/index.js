@@ -15,7 +15,7 @@ module.exports = (req, res) => {
   }
 
   axios.post(historyUrl, querystring.stringify({
-    apiToken,
+    token: apiToken,
     channel: req.body.channel_id,
     count: 10,
   }))
@@ -35,7 +35,7 @@ module.exports = (req, res) => {
 
     axios.post('https://slack.com/api/chat.postMessage',
       querystring.stringify({
-        apiToken,
+        token: apiToken,
         channel: isPrivate ? userBeingCorrected : '#corrections',
         attachments: JSON.stringify(attachments),
       })
