@@ -1,21 +1,17 @@
 const axios = require('axios')
 const querystring = require('querystring')
-const token = process.env.SLACK_TOKEN
+const { token } = require('../../config')
 const parse = require('./parse')
 const matches = require('./matches')
 
 module.exports = (req, res) => {
-  // console.log(req.body)
   const isPrivate = req.body.channel_name === 'directmessage'
   const historyUrl = `https://slack.com/api/${isPrivate ? 'im.history' : 'channels.history'}`
-
-  const sender = req.body.user_name
-  const text = req.body.text
-
+  const { user_name: sender, text } = req.body
   const { incorrect, correct, parseError } = parse(text)
 
   if (parseError) {
-    return res.send('Supported formats: /correct /s/foo/bar')
+    return res.send('Supported formats:\n/correct incorrect = correct \n/correct /s/incorrect/correct')
   }
 
   axios.post(historyUrl, querystring.stringify({
