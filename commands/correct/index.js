@@ -2,6 +2,7 @@ const axios = require('axios')
 const querystring = require('querystring')
 const token = process.env.SLACK_TOKEN
 const parse = require('./parse')
+const matches = require('./matches')
 
 module.exports = (req, res) => {
   // console.log(req.body)
@@ -11,29 +12,21 @@ module.exports = (req, res) => {
   const sender = req.body.user_name
   const text = req.body.text
 
-  const parsed = parse(text)
+  const { incorrect, correct, parseError } = parse(text)
 
-  if (!parsed) {
+  if (parseError) {
     return res.send('Supported formats: /correct /s/foo/bar')
   }
-
-  const { incorrect: search, correct: replacement } = parsed
 
   axios.post(historyUrl, querystring.stringify({
     token,
     channel: req.body.channel_id,
     count: 10,
-  })).then((imResponse) => {
-    const messages = imResponse.data.messages
-
-    const matchingMessages = messages.filter(m => m.text.includes(search))
-
-    if (matchingMessages.length === 0) {
-      return res.send(`No messages containing ${search} in the last 10 messages.`)
-    }
-
-    const userBeingCorrected = matchingMessages[0].user
-    const replacementText = `<@${userBeingCorrected}>: ${matchingMessages[0].text.replace(search, `~${search}~ ${replacement}`)}`
+  }))
+  .then(matches(incorrect))
+  .then(message => {
+    const userBeingCorrected = message.user
+    const replacementText = `<@${userBeingCorrected}>: ${message.text.replace(incorrect, `~${incorrect}~ ${correct}`)}`
     const attachments = JSON.stringify([
       {
         text: replacementText,
@@ -69,7 +62,6 @@ module.exports = (req, res) => {
       res.send('Error! ' + err.message)
     })
   }).catch(err => {
-    console.log(err)
-    res.send('Error! ' + err.message)
+    res.send(err.message)
   })
 }

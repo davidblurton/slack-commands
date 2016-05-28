@@ -11,5 +11,7 @@ module.exports = input => {
       return { incorrect, correct }
     }
   }
-  return null
+  return {
+    parseError: `Didn't match any pattern`
+  }
 }

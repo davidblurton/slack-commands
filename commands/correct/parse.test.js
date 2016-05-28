@@ -19,5 +19,7 @@ test('should parse simple syntax', assert => {
 
 test('should return null if no pattern matches', assert => {
   const input = 'help'
-  assert.is(parse(input), null)
+  assert.deepEqual(parse(input), {
+    parseError: `Didn't match any pattern`,
+  })
 })
