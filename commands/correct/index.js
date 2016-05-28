@@ -27,7 +27,7 @@ module.exports = (req, res) => {
   .then(message => {
     const userBeingCorrected = message.user
     const replacementText = `<@${userBeingCorrected}>: ${message.text.replace(incorrect, `~${incorrect}~ ${correct}`)}`
-    const attachments = JSON.stringify([
+    const attachments = [
       {
         text: replacementText,
         fallback: replacementText,
@@ -35,7 +35,7 @@ module.exports = (req, res) => {
         color: '#36a64f',
         mrkdwn_in: ['text']
       }
-    ])
+    ]
 
     axios.post('https://slack.com/api/chat.postMessage',
       querystring.stringify({
@@ -46,15 +46,7 @@ module.exports = (req, res) => {
     ).then((postMessageResponse) => {
       res.json({
         text: `Thanks! Your correction was ${isPrivate ? 'sent as a direct message' : 'posted in #corrections'}`,
-        attachments: [
-            {
-                text: replacementText,
-                fallback: replacementText,
-                footer: `Correction from ${sender}`,
-                color: '#36a64f',
-                mrkdwn_in: ['text']
-            }
-        ]
+        attachments,
       })
     })
     .catch(err => {
