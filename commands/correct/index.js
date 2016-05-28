@@ -41,7 +41,7 @@ module.exports = (req, res) => {
       querystring.stringify({
         token,
         channel: isPrivate ? userBeingCorrected : '#corrections',
-        attachments,
+        attachments: JSON.stringify(attachments),
       })
     ).then((postMessageResponse) => {
       res.json({
