@@ -3,6 +3,7 @@ machine:
     - docker
   environment:
     TAG: davidblurton/slack-commands
+    TEST_COMMAND: npm test
 
 dependencies:
   cache_directories:
@@ -10,12 +11,12 @@ dependencies:
   override:
     - docker info
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
-    - docker build -t $TAG .
+    - docker build -t $TAG:$CIRCLE_SHA1 .
     - mkdir -p ~/docker; docker save $TAG > ~/docker/image.tar
 
 test:
   override:
-    - docker run $TAG npm test
+    - docker run $TAG $TEST_COMMAND
 
 deployment:
   hub:
